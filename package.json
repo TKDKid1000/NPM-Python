@@ -1,0 +1,12 @@
+{
+  "name": "npm-python",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd test && pypm test"
+  },
+  "keywords": [],
+  "author": "TKDKid1000",
+  "license": "ISC"
+}

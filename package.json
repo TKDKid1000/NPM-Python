@@ -2,13 +2,17 @@
   "name": "@tkdkid1000/npm-python",
   "version": "1.0.0",
   "description": "Npm styled python package manager.",
-  "main": "index.js",
+  "main": "cli.js",
   "scripts": {
-    "test": "cd test && pypm test"
+    "test": "cd test && pypm test",
+    "install": "cd cli && npm i && npm run build"
   },
   "keywords": [],
   "author": "TKDKid1000",
   "license": "MIT",
+  "bin": {
+    "pypm": "./cli.js"
+  },
   "directories": {
     "test": "test"
   },

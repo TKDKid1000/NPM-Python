@@ -1,7 +1,4 @@
-#!/usr/bin/env node
-
 import yargs from "yargs/yargs"
-import { hideBin } from "yargs/helpers"
 import fs from "fs"
 import path from "path"
 import { spawn } from "child_process"
@@ -10,7 +7,7 @@ import chalk from "chalk"
 
 const logger = new Logger(`${chalk.gray("[")}${chalk.bold.red("PYPM")}${chalk.gray("]")} `)
 
-yargs(hideBin(process.argv))
+const command = yargs()
     .command("init", "Initializes a package.json file", yargs => {
         return yargs
     }, argv => {
@@ -130,7 +127,6 @@ yargs(hideBin(process.argv))
     })
     .recommendCommands()
     .demandCommand()
-    .argv
 
 function installAllFromPackage(dev?: boolean) {
     var requirements = ""
@@ -158,3 +154,5 @@ function installAllFromPackage(dev?: boolean) {
         fs.rmSync(".requirements.txt.tmp")
     })
 }
+
+export {command}

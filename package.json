@@ -1,12 +1,20 @@
 {
-  "name": "npm-python",
+  "name": "@tkdkid1000/npm-python",
   "version": "1.0.0",
-  "description": "",
+  "description": "Npm styled python package manager.",
   "main": "index.js",
   "scripts": {
     "test": "cd test && pypm test"
   },
   "keywords": [],
   "author": "TKDKid1000",
-  "license": "ISC"
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://gitsrv.tkdkid1000.net/TKDKid1000/NPM-Python.git"
+  }
 }

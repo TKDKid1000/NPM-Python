@@ -1,6 +1,6 @@
 {
   "name": "@tkdkid1000/npm-python",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Npm styled python package manager.",
   "main": "cli.js",
   "scripts": {

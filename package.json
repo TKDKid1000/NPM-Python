@@ -1,5 +1,5 @@
 {
-  "name": "py-pm",
+  "name": "@tkdkid1000/pypm",
   "version": "1.0.1",
   "description": "Npm styled python package manager.",
   "main": "cli.js",

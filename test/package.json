@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "PyYaml": "latest"
+    "discord": "latest",
+    "flask": "latest"
   }
 }

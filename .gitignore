@@ -1,6 +1,4 @@
-/cli/bin/config.json
 /cli/bin/
 /cli/node_modules/
 /node_modules/
 /test/packages/
-/package-lock.json

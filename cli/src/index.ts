@@ -1,7 +1,7 @@
 import yargs from "yargs/yargs"
 import fs from "fs"
 import path from "path"
-import { spawn } from "child_process"
+import { spawn, exec } from "child_process"
 import { Logger } from "./logger"
 import chalk from "chalk"
 
@@ -62,7 +62,7 @@ const command = yargs()
                 logger.error(content)
             })
             installer.on("exit", code => {
-                if (code != null) {
+                if (code !== null) {
                     const packageJson = JSON.parse(fs.readFileSync("package.json").toString())
                     packageJson[argv.dev ? "devDependencies" : "dependencies"][packageName] = version
                     fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2))
@@ -124,6 +124,52 @@ const command = yargs()
         const configFile = JSON.parse(fs.readFileSync(path.join(__dirname, "config.json")).toString())
         configFile[argv.key] = argv.value
         fs.writeFileSync(path.join(__dirname, "config.json"), JSON.stringify(configFile))
+    })
+    .command("run [script] [arguments]", "Runs a pypm script", yargs => {
+        return yargs
+            .positional("script", {
+                describe: "script to run",
+                type: "string"
+            })
+            .positional("arguments", {
+                describe: "script arguments",
+                type: "string"
+            })
+    }, argv => {
+        if (fs.existsSync("package.json")) {
+            const packageJson = JSON.parse(fs.readFileSync("package.json").toString())
+            if (argv.script) {
+                if (packageJson.scripts[argv.script]) {
+                    const command = (packageJson.scripts[argv.script])+(argv.arguments ? " "+argv.arguments : "")
+                    
+                    const commandExecution = exec(command)
+                    logger.line()
+                    logger.log(`> ${packageJson.name}@${packageJson.version} ${argv.script}`)
+                    logger.log(`> ${command}`)
+                    logger.line()
+    
+                    commandExecution.stdout.on("data", data => {
+                        const content = String(data)
+                        logger.log(content)
+                    })
+                    commandExecution.stderr.on("data", data => {
+                        const content = String(data)
+                        logger.error(content)
+                        commandExecution.kill()
+                    })
+                } else {
+                    logger.error("That package script does not exist!")
+                }
+            } else {
+                logger.log(`${chalk.bold("Package scripts")} inside ${chalk.green(packageJson.name+"@"+packageJson.version)}`)
+                for (let script in packageJson.scripts) {
+                    logger.log(chalk.bold("  "+script))
+                    logger.log(chalk.gray("   "+packageJson.scripts[script]))
+                }
+            }
+        } else {
+            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init -y`")
+        }
     })
     .recommendCommands()
     .demandCommand()

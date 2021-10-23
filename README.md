@@ -1,20 +1,21 @@
-# npm-python
+# NPM-Python
 
 Npm styled python package manager.
 
-Installation: `npm install @tkdkid1000/npm-python`
+Installation: `npm install @tkdkid1000/pypm`
 
 ## Usage
 
-```
+```bash
 you@localhost:~/python-package$ pypm                        
 pypm <command>
 
 Commands:
-  pypm init                  Initializes a package.json file
-  pypm install [package]     Installs a pip package                 [aliases: i]
-  pypm uninstall <package>   Uninstalls a pip package              [aliases: rm]
-  pypm config <key> <value>  Modify key-value configuration
+  pypm init                      Initializes a package.json file
+  pypm install [package]         Installs a pip package             [aliases: i]
+  pypm uninstall <package>       Uninstalls a pip package          [aliases: rm]
+  pypm config <key> <value>      Modify key-value configuration
+  pypm run [script] [arguments]  Runs a pypm script
 
 Options:
   --help     Show help                                                 [boolean]
@@ -41,3 +42,8 @@ Uninstalls the specified package.
 ### config
 Sets config values for pypm. Not really needed yet.
 `pypm config <key> <value>`
+
+### run
+Runs package scripts.
+`pypm run`
+`pypm run <script> [args]`

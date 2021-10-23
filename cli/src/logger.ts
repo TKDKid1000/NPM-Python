@@ -22,6 +22,10 @@ class Logger {
         console.debug(this.prefix, message)
     }
 
+    line() {
+        console.log(this.prefix)
+    }
+
 }
 
 export {Logger}

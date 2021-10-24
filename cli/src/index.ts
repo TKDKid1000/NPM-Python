@@ -71,7 +71,7 @@ const command = yargs()
                 }
             })
         } else {
-            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init -y`")
+            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init`")
         }  
     })
     .command(["uninstall <package>", "rm"], "Uninstalls a pip package", yargs => {
@@ -106,7 +106,7 @@ const command = yargs()
             }
             fs.writeFileSync("package.json", JSON.stringify(packageJson, null, 2))
         } else {
-            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init -y`")
+            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init`")
         }  
     })
     .command("config <key> <value>", "Modify key-value configuration", yargs => {
@@ -142,7 +142,11 @@ const command = yargs()
                 if (packageJson.scripts[argv.script]) {
                     const command = (packageJson.scripts[argv.script])+(argv.arguments ? " "+argv.arguments : "")
                     
-                    const commandExecution = exec(command)
+                    const commandExecution = exec(command, {
+                        env: {
+                            "PYTHONPATH": path.resolve("packages")
+                        }
+                    })
                     logger.line()
                     logger.log(`> ${packageJson.name}@${packageJson.version} ${argv.script}`)
                     logger.log(`> ${command}`)
@@ -168,7 +172,39 @@ const command = yargs()
                 }
             }
         } else {
-            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init -y`")
+            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init`")
+        }
+    })
+    .command("start", "Starts your program from the specified main", yargs => {
+        return yargs
+    }, argv => {
+        if (fs.existsSync("package.json")) {
+            const packageJson = JSON.parse(fs.readFileSync("package.json").toString())
+            if (packageJson.main) {
+                const commandExecution = exec("python3 "+packageJson.main, {
+                    env: {
+                        "PYTHONPATH": path.resolve("packages")
+                    }
+                })
+                logger.line()
+                logger.log(`> ${packageJson.name}@${packageJson.version} start`)
+                logger.log(`> ${packageJson.main}`)
+                logger.line()
+    
+                commandExecution.stdout.on("data", data => {
+                    const content = String(data)
+                    logger.log(content)
+                })
+                commandExecution.stderr.on("data", data => {
+                    const content = String(data)
+                    logger.error(content)
+                    commandExecution.kill()
+                })
+            } else {
+                logger.error("You do not have a main file specified!")
+            }
+        } else {
+            logger.error("Error: You are not in a pypm package! Initialize one with `pypm init`")
         }
     })
     .recommendCommands()

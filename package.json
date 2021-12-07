@@ -4,8 +4,7 @@
   "description": "Npm styled python package manager.",
   "main": "cli.js",
   "scripts": {
-    "test": "cd test && pypm test",
-    "install": "cd cli && npm i && npm run build"
+    "test": "cd test && pypm test"
   },
   "keywords": [],
   "author": "TKDKid1000",
@@ -13,6 +12,9 @@
   "bin": {
     "pypm": "./cli.js"
   },
+  "files": [
+    "cli/bin/"
+  ],
   "directories": {
     "test": "test"
   },

@@ -215,11 +215,11 @@ function installAllFromPackage(dev?: boolean) {
     const packageJson = JSON.parse(fs.readFileSync("package.json").toString())
     if (!dev) {
         for (var dependency in packageJson.dependencies) {
-            requirements+=dependency+"=="+packageJson.dependencies[dependency]+"\n"
+            requirements+=dependency+(packageJson.dependencies[dependency]==="latest"?"":"=="+packageJson.dependencies[dependency])+"\n"
         }
     } else {
         for (var dependency in packageJson.devDependencies) {
-            requirements+=dependency+"=="+packageJson.devDependencies[dependency]+"\n"
+            requirements+=dependency+(packageJson.devDependencies[dependency]==="latest"?"":"=="+packageJson.devDependencies[dependency])+"\n"
         }
     }
     fs.writeFileSync(".requirements.txt.tmp", requirements)

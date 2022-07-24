@@ -1,5 +1,7 @@
 {
-    "python.analysis.extraPaths": [
-        "./test/packages"
-    ]
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "python.analysis.extraPaths": [
+    "./test/packages"
+  ]
 }

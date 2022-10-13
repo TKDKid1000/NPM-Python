@@ -258,24 +258,24 @@ const command = yargs()
           fs.readFileSync("package.json").toString()
         );
         if (packageJson.main) {
-          const commandExecution = exec("python3 " + packageJson.main, {
-            env: {
-              PYTHONPATH: path.resolve("packages"),
-            },
-          });
+          const commandExecution = spawn(
+            "python3",
+            [path.resolve(packageJson.main)],
+            {
+              env: {
+                PYTHONPATH: path.resolve("packages"),
+              },
+              shell: true,
+              stdio: ["pipe", process.stdout, process.stderr],
+            }
+          );
           logger.line();
           logger.log(`> ${packageJson.name}@${packageJson.version} start`);
           logger.log(`> ${packageJson.main}`);
           logger.line();
-
-          commandExecution.stdout.on("data", (data) => {
-            const content = String(data);
-            logger.log(content);
-          });
-          commandExecution.stderr.on("data", (data) => {
-            const content = String(data);
-            logger.error(content);
-            commandExecution.kill();
+          commandExecution.stdin.pipe(process.stdin);
+          commandExecution.on("exit", (code) => {
+            console.log(`process exited with code ${code}`);
           });
         } else {
           logger.error("You do not have a main file specified!");
